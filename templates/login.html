@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <div>
+        <form action="login/doctor" method="GET" id="doctor" >
+            <button class="btn btn-primary" type="submit" form="teach" >Doctor - Login</button>
+        </form>
+    </div>
+    <div><br></div>
+    <div>
+        <form action="login/receptionist" method="GET" id="receptionist">
+            <button class="btn btn-primary" type="submit" form="stud">Receptionist - Login</button>
+        </form>
+    </div>
+{% endblock %}

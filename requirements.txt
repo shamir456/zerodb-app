@@ -1,0 +1,10 @@
+flask
+flask-bootstrap
+zerodb==0.98.0
+zerodb-server==0.1.25
+ZEO==4.2.0
+ZODB==4.4.3
+zope.interface==4.1.0
+transaction==2.1.0
+configparser
+flask_wtf

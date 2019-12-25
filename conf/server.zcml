@@ -1,0 +1,11 @@
+<zeo>
+  address localhost:8001
+  authentication-protocol auth_secp256k1_scrypt
+  authentication-database conf/authdb.conf
+  authentication-realm ZERO
+</zeo>
+
+<filestorage>
+  path db/db.fs
+  pack-gc false
+</filestorage>
