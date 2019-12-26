@@ -4,7 +4,7 @@
       rel="stylesheet"/>
 {% endblock extrastyle %}
 {% block main %}
-<form class="form-horizontal" action="{{url_for('reception', form=form or None)}}" method="POST">
+<form class="form-horizontal" action="{{url_for('reception_dashboard', form=form or None)}}" method="POST">
   {% if alert %}
       <div class="alert alert-{{alert.type}}">
           <strong>{{ alert.type }}</strong> {{ alert.message }}

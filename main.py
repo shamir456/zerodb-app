@@ -5,7 +5,7 @@ ZeroDB application example
 from flask import (Flask, render_template, redirect,
                    url_for, request, jsonify, abort, make_response, flash)
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField, SubmitField, BooleanField,PasswordField
+from wtforms import StringField, TextAreaField, SubmitField, BooleanField, PasswordField, DateField, SelectField
 from wtforms.validators import DataRequired
 from flask_bootstrap import Bootstrap
 import models
@@ -85,6 +85,20 @@ class LoginEditor(Form):
     password= PasswordField("password",validators=[DataRequired()])
     submit =  SubmitField('Submit')
 
+class AppointmentTemplate(Form):
+    name= StringField("patient_name", validators=[DataRequired()])
+    date= DateField("arrival_Date", validators=[DataRequired()])
+    doctor_name = SelectField('Name', [DataRequired()],
+                        choices=[('Farmer', 'farmer'),
+                                 ('Corrupt Politician', 'politician'),
+                                 ('No-nonsense City Cop', 'cop'),
+                                 ('Professional Rocket League Player', 'rocket'),
+                                 ('Lonely Guy At A Diner', 'lonely'),
+                                 ('Pokemon Trainer', 'pokemon')])
+    reception_name=StringField("reception_name", validators =[DataRequired])
+    Age= StringField("age", validators=[DataRequired()])
+    bloodgroup= StringField("bloodgroup", validators=[DataRequired()])
+
 
 
 @app.errorhandler(404)
@@ -103,8 +117,8 @@ def error_in_data(error):
     return make_response(jsonify({"error": "Your data not true"}))
 
 
-@app.route("/doctor/viewpatients")
-def viewp_patients():
+@app.route("/viewpatients")
+def view_patients():
     """
     Index Page
     """
@@ -222,7 +236,7 @@ def reception():
         #     # return redirect('/')
         # else:
         flash(username+'  '+password)
-        return render_template('reception_login.html', form=form)
+        return render_template('reception_dashboard.html', form=form)
     return render_template('reception_login.html', form=form)
     
 
@@ -242,7 +256,7 @@ def doctor_login():
         #     # return redirect('/')
         # else:
         flash(username+'  '+password)
-        return render_template('doctor_login.html', form=form)
+        return render_template("current_patients.html", myPatients=Temp_patients, form=form)
     return render_template('doctor_login.html', form=form)
         
 @app.route("/login/admin_login/", methods=["GET", "POST"])
@@ -263,7 +277,8 @@ def admin_login():
         flash(username+'  '+password)
         return render_template('admin_login.html', form=form)
     return render_template('admin_login.html', form=form)
-        
+
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login_student():
@@ -278,6 +293,9 @@ def login_student():
 
     return render_template('login.html')
 
+@app.route("/reception_dashboard", methods=["GET", "POST"])
+def reception_dashboard():
+        return render_template('reception_dashboard.html')
 
 
 
