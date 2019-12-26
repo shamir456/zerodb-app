@@ -28,11 +28,11 @@ class Doctor(Model):
     table_role = Field()
 
     def __repr__(self):
-        return str({"doctor_id":self.doctor_id
+        return str({"doctor_id":self.doctor_id,
                     "email": self.email,
                     "password": self.password,
                     "specialization":self.specialization,
-                    "name":self.name
+                    "name":self.name,
                     "table_role": self.table_role})
 
 class Patient(Model):
