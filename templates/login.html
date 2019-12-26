@@ -6,14 +6,20 @@
 
 {% block main %}
     <div>
-        <form action="login/doctor" method="GET" id="doctor" >
-            <button class="btn btn-primary" type="submit" form="teach" >Doctor - Login</button>
+        <form action="login/doctor_login" id="doctor" >
+            <a href="/login/doctor_login"><button class="btn btn-primary" >Doctor -Login</button></a>
         </form>
     </div>
     <div><br></div>
     <div>
-        <form action="login/receptionist" method="GET" id="receptionist">
-            <button class="btn btn-primary" type="submit" form="stud">Receptionist - Login</button>
+        <form   action="login/reception_login" id="receptionist">
+            <a href="/login/reception_login"><button class="btn btn-primary" >Receptionist -Login</button></a>
+        </form>
+    </div>
+    <div><br></div>
+    <div>
+        <form   action="login/admin_login" id="admin_login">
+            <a href="/login/admin_login"><button class="btn btn-primary" >Admin -Login</button></a>
         </form>
     </div>
 {% endblock %}
