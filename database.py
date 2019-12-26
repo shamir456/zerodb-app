@@ -91,9 +91,9 @@ class ZeroDBStorage(object):
         try:
             if patient is None:
                 patient_record=self.db[Patient].query(table_role="patient")
-                return list(doctor_record)
+                return list(patient_record)
             else:
-                doctor=self.db[Doctor].query(table_role="doctor",email=doctor['email'])
+                doctor=self.db[Patient].query(table_role="patient",email=patient['email'])
                 return list(doctor)
         except:
             LOG.error("Cannot retrieve doctors")
