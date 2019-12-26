@@ -103,7 +103,16 @@ def del_post(post_id):
 
 @app.route("/login/student", methods=["GET", "POST"])
 def login_student():
-        return render_template('login.html')
+    try:
+        zero=ZeroDBStorage()
+        print( zero._get_doctors())
+    except Exception as e:
+
+        flash('Cannot ')
+        # return redirect(url_for("get_post", post_id=post_id))
+
+
+    return render_template('login.html')
 
 
 
