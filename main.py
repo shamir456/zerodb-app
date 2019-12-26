@@ -18,6 +18,61 @@ Bootstrap(app)
 csrf = CSRFProtect(app)
 app.config["SECRET_KEY"] = "Hello"
 
+Temp_patients = [
+{
+  "name":"Fahad",
+  "Date":"16-1-19",
+  "Time":"7 pm",
+  "Age":"20",
+  "BldGrp":"A+",
+},
+{
+  "name":"Shameer",
+  "Date":"16-1-20",
+  "Time":"2 pm",
+  "Age":"10",
+  "BldGrp":"B+",
+},
+{
+  "name":"Mujtaba Bawani",
+  "Date":"13-1-19",
+  "Time":"6 pm",
+  "Age":"50",
+  "BldGrp":"B+",
+},
+]
+Temp_doctors = [
+{
+  "name":"Ammar Rizwan",
+  "email":"test@gmail.com",
+  "specialization":"MBBS"
+},
+{
+  "name":"Moazzam Maqsood",
+  "email":"test@gmail.com",
+  "specialization":"MBBS"
+},
+{
+  "name":"Faizan Saleem",
+  "email":"test@gmail.com",
+  "specialization":"MBBS"
+},
+]
+
+Temp_receptionist = [
+{
+  "name":"Faizan",
+  "email":"test@gmail.com",
+},
+{
+  "name":"Abdul Hameed",
+  "email":"test@gmail.com",
+},
+{
+  "name":"Tahir Hemani",
+  "email":"test@gmail.com",
+},
+]
 class PageDownEditor(Form):
     title = StringField("title", validators=[DataRequired()])
     text = TextAreaField("text", validators=[DataRequired()])
@@ -39,6 +94,49 @@ def error_in_data(error):
     400 Error
     """
     return make_response(jsonify({"error": "Your data not true"}))
+
+
+@app.route("/doctor/viewpatients")
+def viewp_patients():
+    """
+    Index Page
+    """
+    try:
+        zero = ZeroDBStorage()
+        # patients = zero._get()
+        
+        return render_template("current_patients.html", myPatients=Temp_patients)
+    except Exception as e:
+        flash('Cannot get posts in database: ' + str(e))
+        return render_template("current_patients.html", alert=error)
+
+@app.route("/admin/viewdoctors")
+def view_doctors():
+    """
+    Index Page
+    """
+    try:
+        zero = ZeroDBStorage()
+        # patients = zero._get()
+        
+        return render_template("current_doctors.html", myDoctors=Temp_doctors)
+    except Exception as e:
+        flash('Cannot get posts in database: ' + str(e))
+        return render_template("current_doctors.html", alert=error)
+
+@app.route("/admin/viewreceptions")
+def view_receptions():
+    """
+    Index Page
+    """
+    try:
+        zero = ZeroDBStorage()
+        # patients = zero._get()
+        
+        return render_template("current_reception.html", myReception=Temp_receptionist)
+    except Exception as e:
+        flash('Cannot get posts in database: ' + str(e))
+        return render_template("current_reception.html", alert=error)
 
 
 @app.route("/")

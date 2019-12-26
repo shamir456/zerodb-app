@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}
+Doctor
+{% endblock title %}
+
+{% block main %}
+    {% if alert %}
+        <div class="alert alert-{{alert.type}}">
+            <strong>{{ alert.type }}</strong> {{ alert.message }}
+        </div>
+    {% endif %}
+<!-- 
+    <div class="pull-right">
+        <a href="{{ url_for('add_post') }}" id="new">
+            <span class="glyphicon glyphicon-plus"></span>&nbsp;New
+        </a>
+    </div> -->
+    {% if myPatients %}
+     
+   <!DOCTYPE html>
+<html>
+<head>
+<style>
+table.fixed { table-layout:fixed; }
+table.fixed td { overflow: hidden; }
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>Patients</h2>
+
+<table class="fixed">
+    <col width="100px" />
+    <col width="100px" />
+    <col width="100px" />
+    <col width="100px" />
+    <col width="100px" />
+  <tr>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Blood Group</th>
+    <th>Time</th>
+    <th>Date</th>
+  </tr>
+</table>
+{% for post in myPatients %}
+<table class="fixed">
+    <col width="100px" />
+    <col width="100px" />
+    <col width="100px" />
+    <col width="100px" />
+    <col width="100px" />
+  <tr>
+    <td>{{post.name}}</td>
+    <td>{{post.Age}}</td>
+    <td>{{post.BldGrp}}</td>
+    <td>{{post.Time}}</td>
+    <td>{{post.Date}}</td>
+  </tr>
+</table>
+
+</body>
+</html>
+
+<!--         <a href="/doctor/id={{post.pid }}">
+            <h1>{{ post.name }}</h1>
+        </a>
+        <p>{{ post.Date}}</p>
+ -->
+
+
+    {% endfor %}
+    {% endif %}
+    {% if ((meta)  and (meta.max_pages>1)) %}
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="pager">
+                    {% if meta.pagination.prev_page %}
+                        <li><a href="{{meta.pagination.prev_page}}">&laquo;Prev</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="">&laquo; Prev</a></li>
+                    {% endif %}
+                    {% if meta.pagination.next_page %}
+                        <li><a href="{{meta.pagination.next_page}}">Next &raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="">Next &raquo;</a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock main %}
