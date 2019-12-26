@@ -3,13 +3,13 @@ Implement action to iteract with database
 """
 import zerodb
 import transaction
-from models import Posts
+from models import Posts,Doctor
 import config
 import log
 
 import uuid
 CONF = config.get_config()
-LOG = log.setup_log("My-Blog")
+LOG = log.setup_log("App")
 
 
 class ZeroDBStorage(object):
@@ -48,6 +48,56 @@ class ZeroDBStorage(object):
             except:
                 LOG.error("Cannot create a post")
         self.db.disconnect
+
+
+    def _create_doctor(self,doctor):
+        """
+        Create a post
+        """
+        # print(doctor)
+        # try:
+        #     doctors=self.db[Doctor].query(table_role="doctor")
+        #     print(doctors)
+        #     print('ggg')
+        # except:
+        #     LOG.error("Cannot get posts in database")
+
+        with transaction.manager:
+            try:
+                print('kkkk')
+
+                p = Doctor(email=doctor['email'],password=doctor['password'],table_role="doctor")
+                print(p,'kkkk')
+                self.db.add(p)
+                transaction.commit()
+
+                return True
+            except:
+                LOG.error("Cannot add Doctor")
+        self.db.disconnect
+
+    def _get_doctors(self,doctor=None):
+        try:
+            if doctor is None:
+                doctor_record=self.db[Doctor].query(table_role="doctor")
+                return list(doctor_record)
+            else:
+                doctor=self.db[Doctor].query(table_role="doctor",email=doctor['email'])
+                return list(doctor)
+        except:
+            LOG.error("Cannot retrieve doctors")
+
+    def _get_patients(self,patient=None):
+        try:
+            if patient is None:
+                patient_record=self.db[Patient].query(table_role="patient")
+                return list(patient_record)
+            else:
+                doctor=self.db[Patient].query(table_role="patient",email=patient['email'])
+                return list(doctor)
+        except:
+            LOG.error("Cannot retrieve doctors")
+
 
     def _delete(self, post_id):
         try:

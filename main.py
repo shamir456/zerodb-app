@@ -5,7 +5,7 @@ ZeroDB application example
 from flask import (Flask, render_template, redirect,
                    url_for, request, jsonify, abort, make_response, flash)
 from flask_wtf import Form
-from wtforms import StringField, TextAreaField, SubmitField, BooleanField
+from wtforms import StringField, TextAreaField, SubmitField, BooleanField,PasswordField
 from wtforms.validators import DataRequired
 from flask_bootstrap import Bootstrap
 import models
@@ -78,6 +78,13 @@ class PageDownEditor(Form):
     text = TextAreaField("text", validators=[DataRequired()])
     text2=StringField("text2",validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+class LoginEditor(Form):
+    username = StringField("username", validators=[DataRequired()])
+    password= PasswordField("password",validators=[DataRequired()])
+    submit =  SubmitField('Submit')
+
 
 
 @app.errorhandler(404)
@@ -199,9 +206,77 @@ def del_post(post_id):
         flash('Cannot delete this post: ' + str(e))
         return redirect(url_for("get_post", post_id=post_id))
 
-@app.route("/login/student", methods=["GET", "POST"])
+@app.route("/login/reception_login/", methods=["GET", "POST"])
+def reception():
+    form = LoginEditor()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        print(username,password)
+        # post = {
+        #     'title': title,
+        #     'content': content
+        # }
+        # zero = ZeroDBStorage()
+        # if zero._create(post=post):
+        #     # return redirect('/')
+        # else:
+        flash(username+'  '+password)
+        return render_template('reception_login.html', form=form)
+    return render_template('reception_login.html', form=form)
+    
+
+@app.route("/login/doctor_login/", methods=["GET", "POST"])
+def doctor_login():
+    form = LoginEditor()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        print(username,password)
+        # post = {
+        #     'title': title,
+        #     'content': content
+        # }
+        # zero = ZeroDBStorage()
+        # if zero._create(post=post):
+        #     # return redirect('/')
+        # else:
+        flash(username+'  '+password)
+        return render_template('doctor_login.html', form=form)
+    return render_template('doctor_login.html', form=form)
+        
+@app.route("/login/admin_login/", methods=["GET", "POST"])
+def admin_login():
+    form = LoginEditor()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        print(username,password)
+        # post = {
+        #     'title': title,
+        #     'content': content
+        # }
+        # zero = ZeroDBStorage()
+        # if zero._create(post=post):
+        #     # return redirect('/')
+        # else:
+        flash(username+'  '+password)
+        return render_template('admin_login.html', form=form)
+    return render_template('admin_login.html', form=form)
+        
+
+@app.route("/login", methods=["GET", "POST"])
 def login_student():
-        return render_template('login.html')
+    try:
+        zero=ZeroDBStorage()
+        print( zero._get_doctors())
+    except Exception as e:
+
+        flash('Cannot ')
+        # return redirect(url_for("get_post", post_id=post_id))
+
+
+    return render_template('login.html')
 
 
 
