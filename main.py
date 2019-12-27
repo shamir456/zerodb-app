@@ -87,17 +87,18 @@ class LoginEditor(Form):
 
 class AppointmentTemplate(Form):
     name= StringField("patient_name", validators=[DataRequired()])
-    date= DateField("arrival_Date", validators=[DataRequired()])
-    doctor_name = SelectField('Name', [DataRequired()],
+    # date= DateField("arrival_Date",format='%Y-%m-%d', validators=[DataRequired()])
+    doctor_name = SelectField('Name',
                         choices=[('Farmer', 'farmer'),
                                  ('Corrupt Politician', 'politician'),
                                  ('No-nonsense City Cop', 'cop'),
                                  ('Professional Rocket League Player', 'rocket'),
                                  ('Lonely Guy At A Diner', 'lonely'),
                                  ('Pokemon Trainer', 'pokemon')])
-    reception_name=StringField("reception_name", validators =[DataRequired])
-    Age= StringField("age", validators=[DataRequired()])
-    bloodgroup= StringField("bloodgroup", validators=[DataRequired()])
+    reception_name=StringField("reception_name",)
+    age= StringField("age", validators=[DataRequired()])
+    bloodgroup= StringField("bloodgroup",)
+    submit =  SubmitField('Submit')
 
 
 
@@ -117,7 +118,7 @@ def error_in_data(error):
     return make_response(jsonify({"error": "Your data not true"}))
 
 
-@app.route("/viewpatients")
+@app.route("/viewpatients", methods=["GET", "POST"])
 def view_patients():
     """
     Index Page
@@ -198,6 +199,8 @@ def add_post():
     return render_template('editor.html', form=form)
 
 
+
+
 @app.route("/post/id=<string:post_id>", methods=['GET', 'POST'])
 def get_post(post_id):
     try:
@@ -236,8 +239,38 @@ def reception():
         #     # return redirect('/')
         # else:
         flash(username+'  '+password)
-        return render_template('reception_dashboard.html', form=form)
+        return redirect("/reception_dashboard")
     return render_template('reception_login.html', form=form)
+
+@app.route("/reception_dashboard/Appointmentform", methods=["GET", "POST"])
+def add_appointment():
+    print("dsadasdas")
+    form = AppointmentTemplate()
+    print(form.name.data)
+    if form.validate_on_submit():
+        print(form.name.data)
+        p_name = form.name.data
+        # date = form.date.data
+        doc_name= form.doctor_name.data
+        receptionist_name= form.reception_name.data
+        age= form.age.data
+        bloodgroup=form.bloodgroup.data
+        print('patient name',p_name)
+        print('doctor name',doc_name)
+        print('receptionist_name',receptionist_name)
+        print('Age',age)
+        print('bloodgroup',bloodgroup)
+    # post = {
+        #     'title': title,
+        #     'content': content
+        # }
+        # zero = ZeroDBStorage()
+        # if zero._create(post=post):
+        #     # return redirect('/')
+        # else:
+        return render_template('success.html', form=form)
+    return render_template('appointment_form.html', form=form)
+    
     
 
 @app.route("/login/doctor_login/", methods=["GET", "POST"])
@@ -297,7 +330,9 @@ def login_student():
 def reception_dashboard():
         return render_template('reception_dashboard.html')
 
-
+@app.route("/addsuccesfully", methods=["GET", "POST"])
+def success():
+        return render_template('success.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

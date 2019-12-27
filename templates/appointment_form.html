@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block extrastyle %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.8.0/css/bootstrap-markdown.min.css"
+      rel="stylesheet"/>
+{% endblock extrastyle %}
+{% block main %}
+<form class="form-horizontal" action="{{url_for('add_appointment', form=form or None)}}" method="POST">
+  {% if alert %}
+      <div class="alert alert-{{alert.type}}">
+          <strong>{{ alert.type }}</strong> {{ alert.message }}
+      </div>
+  {% endif %}
+    {{ form.hidden_tag() }}
+
+    <fieldset style="width: 50%;">
+        <!-- Form Name -->
+        <legend>appointmnet form</legend>
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="control-label col-md-offset-2  control-label input-md" for="username">
+                Patient Name
+            </label>
+            <div class="input-group col-md-8 col-md-offset-2">
+                {{form.name(placeholder="username",maxlength="15", id="name", class="form-control", required="" )}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-offset-2  control-label input-md" for="username">
+                Patient Age
+            </label>
+            <div class="input-group col-md-8 col-md-offset-2">
+                {{form.age(placeholder="age", type="number" , class="form-control", required="")}}
+                
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-offset-2  control-label input-md" for="username">
+                Blood Group
+            </label>
+            <div class="input-group col-md-8 col-md-offset-2">
+                {{form.bloodgroup(placeholder="blood group", class="form-control", required="")}}
+                
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-offset-2  control-label input-md" for="username">
+                Reception Name
+            </label>
+            <div class="input-group col-md-8 col-md-offset-2">
+                {{form.reception_name(placeholder="receptionist name", class="form-control", required="")}}
+                
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-left: 16%;">Doctor Appointed {{ form.doctor_name }}
+            <i class="fas fa-caret-down"></i>
+            {% if form.doctor_name.errors %}
+                <ul class="errors">
+                    {% for error in form.title.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+       
+        <div class="form-group">
+            <div class="col-md-offset-2">s
+                {{ form.submit(id="submit", class="btn btn-primary") }}
+            </div>
+        </div>
+    </fieldset>
+</form>
+{% endblock main %}
+
+{% block extrajs %}
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.8.0/js/bootstrap-markdown.min.js">
+    </script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js">
+    </script>
+{% endblock extrajs %}
