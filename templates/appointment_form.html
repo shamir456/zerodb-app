@@ -27,6 +27,15 @@
 
         <div class="form-group">
             <label class="control-label col-md-offset-2  control-label input-md" for="username">
+                Date and Time
+            </label>
+            <div class="input-group col-md-8 col-md-offset-2">
+                {{form.date_time( class="form-control")}}
+                
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-offset-2  control-label input-md" for="username">
                 Patient Age
             </label>
             <div class="input-group col-md-8 col-md-offset-2">
@@ -57,18 +66,12 @@
 
         <div class="form-group" style="margin-left: 16%;">Doctor Appointed {{ form.doctor_name }}
             <i class="fas fa-caret-down"></i>
-            {% if form.doctor_name.errors %}
-                <ul class="errors">
-                    {% for error in form.title.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+           
         </div>
 
        
         <div class="form-group">
-            <div class="col-md-offset-2">s
+            <div class="col-md-offset-2">
                 {{ form.submit(id="submit", class="btn btn-primary") }}
             </div>
         </div>

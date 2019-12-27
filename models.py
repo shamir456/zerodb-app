@@ -35,37 +35,72 @@ class Doctor(Model):
                     "name":self.name,
                     "table_role": self.table_role})
 
-class Patient(Model):
-    patient_id = Field()
-    name=Field()
-    age=Field()
-    blood_group=Field()
-    table_role=Field()
-
-    def __repr__(self):
-        return str({
-            "patient_id":self.patient_id,
-            "name":self.name,
-            "age":self.age,
-            "blood_group":self.blood_group,
-            "table_role":self.table_role
-            })
 
 
 
 
 class Appointment(Model):
 
-    pid=Field()
-    count=Field()
+    appoint_id=Field()
+    name=Field()
+    age=Field()
+    blood_group=Field()
     date_time=Field()
     doctor_id=Field()
     recep_id=Field()
     table_role=Field()
 
+    def __repr__(self):
+        return str({
+            "name":self.name,
+            "doctor_id":self.doctor_id,
+            "age":self.age,
+            "recep_id":self.recep_id,
+            "date_time":self.date_time,
+            "blood_group":self.blood_group,
+            "table_role":self.table_role
+            })
 
 
 class Receptionist(Model):
-    pid=Field()
+    recep_id=Field()
     name=Field()
+    password=Field()
+    email=Field()
+    table_role=Field()
+
+    def __repr__(self):
+        return str({
+            "recep_id":self.recep_id,
+            "name":self.name,
+            "password":self.password,
+            "email":self.email,
+            "table_role":self.table_role
+
+            })
+
+
+
+class Admin(Model):
+
+    admin_id=Field()
+    name=Field()
+    password=Field()
+    email=Field()
+    table_role=Field()
+
+    def __repr__(self):
+        return str({
+            "admin_id":self.admin_id,
+            "name":self.name,
+            "password":self.password,
+            "email":self.email,
+            "table_role":self.table_role
+
+            })
+
+
+
+
+
     
