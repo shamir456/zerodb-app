@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <div>
+        <form action="/admin_dashboard/receptionist_registry" id="Appointment" >
+            <a href="/admin_dashboard/receptionist_registry"><button class="btn btn-primary" >Add receptionist</button></a>
+        </form>
+    </div>
+    <div><br></div>
+    <div>
+        <form   action="/admin_dashboard/doctor_registry" id="receptionist">
+            <a href="/admin_dashboard/doctor_registry"><button class="btn btn-primary" >Add Doctor</button></a>
+        </form>
+    </div>
+    <div><br></div>
+    <div>
+        <form action="/admin_dashboard/viewreceptions" id="Appointment" >
+            <a href="/admin_dashboard/viewreceptions"><button class="btn btn-primary" >view receptionist</button></a>
+        </form>
+    </div>
+    <div><br></div>
+    <div>
+        <form action="/admin_dashboard/viewdoctors" id="Appointment" >
+            <a href="/admin_dashboard/viewdoctors"><button class="btn btn-primary" >view doctors</button></a>
+        </form>
+    </div>
+
+   
+
+{% endblock %}
