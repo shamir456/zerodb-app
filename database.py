@@ -64,7 +64,7 @@ class ZeroDBStorage(object):
                 print(p,'kkkk')
                 m=self.db.add(p)
                 transaction.commit()
-                return m
+                return True
             except:
                 LOG.error("Cannot add Doctor")
         self.db.disconnect
@@ -82,16 +82,18 @@ class ZeroDBStorage(object):
         with transaction.manager:
             try:
                 print('kkkk')
-                p=db[Doctor].query(table_role="doctor",name=appointment['doctor_id'])
+                # p=db[Doctor].query(table_role="doctor",name=appointment['doctor_id'])
 
                 appointment_id = str(uuid.uuid4())
                 p = Appointment(appoint_id=appointment_id,
-                    name=appointment['name'],
-                    password=appointment['password'],
-                    blood_group=appointment['blood_group'],
-                    recep_id=appointment['recep_id'],
-                    date_time=appointment['date_time'],
-                    table_role="doctor")
+                    name=appointment['patient_name'],
+                    blood_group=appointment['bloodgroup'],
+                    recep_id=appointment['receptionist_id'],
+                    date_time=appointment['datetime'],
+                    age=appointment['age'],
+                    doctor_id=appointment['doctor_id'],
+                    table_role="appointment")
+
                 print(p,'kkkk')
                 self.db.add(p)
                 transaction.commit()
@@ -202,10 +204,10 @@ class ZeroDBStorage(object):
     def _get_appointments(self,patient=None):
         try:
             if patient is None:
-                patient_record=self.db[Appointment].query(table_role="receptionist")
+                patient_record=self.db[Appointment].query(table_role="appointment")
                 return list(patient_record)
             else:
-                patient=self.db[Appointment].query(table_role="receptionist",email=patient['email'])
+                patient=self.db[Appointment].query(table_role="appointment",email=patient['name'])
                 return list(patient)
         except:
             LOG.error("Cannot retrieve doctors")
@@ -221,9 +223,9 @@ class ZeroDBStorage(object):
         except:
             LOG.error("Cannot Retrive Receptionists")
 
-    def _delete(self, post_id):
+    def _delete(self, email):
         try:
-            post_record = self.db[Posts].query(pid=post_id)
+            post_record = self.db[Doctor].query(email=email)
             self.db.remove(post_record[0])
             transaction.commit()
             return True

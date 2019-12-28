@@ -114,7 +114,10 @@ class AppointmentTemplate(Form):
                         choices=[])
     reception_name=StringField("reception_name",)
     age= StringField("age", validators=[DataRequired()])
-    bloodgroup= StringField("bloodgroup",)
+    bloodgroup= SelectField(
+        'bloodgroup',
+        choices=[('A', 'A'), ('AB', 'AB'), ('O+', 'O+'),('O-', 'O-')]
+    )
     submit =  SubmitField('Submit')
 
 
@@ -142,12 +145,22 @@ def view_patients():
     """
     try:
         zero = ZeroDBStorage()
-        # patients = zero._get()
+        patients = zero._get_appointments()
+        print(patients)
+        patient_date=patients[0].date_time
+        print(patient_date)
+        date = datetime.datetime.strptime(patient_date, "%Y-%m-%d %H:%M:%S")
+        print(date.year)
+        # date_app=date.year+'-'+date.month+'-'+date.day
+        # print(date_app)
+        # time_app=date.hour+':'+date.minute
+        # print(date_app)
+
         
-        return render_template("current_patients.html", myPatients=Temp_patients)
+        return render_template("current_patients.html", myPatients=patients)
     except Exception as e:
-        flash('Cannot get posts in database: ' + str(e))
-        return render_template("current_patients.html", alert=error)
+        # flash('Cannot get posts in database: ' + str(e))
+        return render_template("current_patients.html")
 
 @app.route("/admin_dashboard/viewdoctors")
 def view_doctors():
@@ -156,9 +169,16 @@ def view_doctors():
     """
     try:
         zero = ZeroDBStorage()
+        doctors=zero._get_doctors()
+        print(doctors)
+        # if zero._delete('k164030@u.edu.pk'):
+        #     print('Deleted')
+        # else:
+        #     print('FAiled')
+
         # patients = zero._get()
         
-        return render_template("current_doctors.html", myDoctors=Temp_doctors)
+        return render_template("current_doctors.html", myDoctors=doctors)
     except Exception as e:
         flash('Cannot get posts in database: ' + str(e))
         return render_template("current_doctors.html", alert=error)
@@ -170,9 +190,10 @@ def view_receptions():
     """
     try:
         zero = ZeroDBStorage()
-        # patients = zero._get()
+        receptionist = zero._get_receptionist()
+        print(receptionist)
         
-        return render_template("current_reception.html", myReception=Temp_receptionist)
+        return render_template("current_reception.html", myReception=receptionist)
     except Exception as e:
         flash('Cannot get posts in database: ' + str(e))
         return render_template("current_reception.html", alert=error)
@@ -258,6 +279,7 @@ def reception():
 
         if verified:
             session['receptionist_id']=str(receptionist.recep_id)
+            session['reception_name']=str(receptionist.name)
             print(session['receptionist_id'])
             return redirect("/reception_dashboard")
         else:
@@ -290,15 +312,22 @@ def add_appointment():
         print('receptionist_name',receptionist_name)
         print('Age',age)
         print('bloodgroup',bloodgroup)
-    # post = {
-        #     'title': title,
-        #     'content': content
-        # }
-        # zero = ZeroDBStorage()
-        # if zero._create(post=post):
-        #     # return redirect('/')
-        # else:
-        return render_template('success.html')
+        appointment = {
+                'receptionist_id': session['receptionist_id'],
+                'age': age,
+                'doctor_id':doc_name,
+                'bloodgroup':bloodgroup,
+                'datetime':str(date_time),
+                'patient_name':p_name
+            }
+        print(appointment)
+        zero = ZeroDBStorage()
+        if zero._create_appointment(appointment=appointment):
+            # return redirect('/')
+            return render_template('success.html')
+
+        else:
+            flash('Cannot Add appointment')
     return render_template('appointment_form.html', form=form)
 
 
@@ -317,21 +346,23 @@ def add_doctor():
         print(email)
         print(password)
         print(specialization)
-    # post = {
-        #     'title': title,
-        #     'content': content
-        # }
-        # zero = ZeroDBStorage()
-        # if zero._create(post=post):
-        #     # return redirect('/')
-        # else:
-        return render_template('doctor_success.html', form=form)
+        doctor = {
+                'name': name,
+                'specialization': specialization,
+                'email':email,
+                'password':password
+            }
+        zero = ZeroDBStorage()
+        if zero._create_doctor(doctor=doctor):
+            return render_template('doctor_success.html', form=form)
+        else:
+            print('Cannot Add')
     return render_template('doctor_registry.html', form=form)
     
 @app.route("/admin_dashboard/receptionist_registry", methods=["GET", "POST"])
 def add_receptionist():
     print("adding receptionist")
-    form = DoctorRegistryEditor()
+    form = ReceptionistRegistryEditor()
     print(form.name.data)
     if form.validate_on_submit():
         print(form.name.data)
@@ -341,15 +372,19 @@ def add_receptionist():
         print(name)
         print(email)
         print(password)
-    # post = {
-        #     'title': title,
-        #     'content': content
-        # }
-        # zero = ZeroDBStorage()
-        # if zero._create(post=post):
-        #     # return redirect('/')
-        # else:
-        return redirect("/d_add_succesfully")
+        receptionist = {
+                'name': name,
+                'email': email,
+                'password':password
+            }
+        print(receptionist)
+        zero = ZeroDBStorage()
+        if zero._create_receptionist(reception=receptionist):
+            return redirect("/d_add_succesfully")
+
+            # return redirect('/')
+        else:
+            print('Not Done')
     return render_template('receptionist_registry.html', form=form)
       
 

@@ -44,25 +44,13 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-md-offset-2  control-label input-md" for="username">
-                Blood Group
-            </label>
-            <div class="input-group col-md-8 col-md-offset-2">
-                {{form.bloodgroup(placeholder="blood group", class="form-control", required="")}}
-                
-            </div>
+     
+        <div class="form-group" style="margin-left: 16%;">Blood Group {{form.bloodgroup}}    
+            <i class="fas fa-caret-down"></i>
+           
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-md-offset-2  control-label input-md" for="username">
-                Reception Name
-            </label>
-            <div class="input-group col-md-8 col-md-offset-2">
-                {{form.reception_name(placeholder="receptionist name", class="form-control", required="")}}
-                
-            </div>
-        </div>
+        
 
         <div class="form-group" style="margin-left: 16%;">Doctor Appointed {{ form.doctor_name }}
             <i class="fas fa-caret-down"></i>
