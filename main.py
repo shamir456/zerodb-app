@@ -82,8 +82,21 @@ class PageDownEditor(Form):
 
 class LoginEditor(Form):
     username = StringField("username", validators=[DataRequired()])
-    password= PasswordField("password",validators=[DataRequired()])
-    submit =  SubmitField('Submit')
+    password = PasswordField("password",validators=[DataRequired()])
+    submit   = SubmitField('Submit')
+
+class DoctorRegistryEditor(Form):
+    name     = StringField("username", validators=[DataRequired()])
+    password = PasswordField("password",validators=[DataRequired()])
+    specialization = StringField("specialization", validators=[DataRequired()])
+    email    = StringField("Email",validators=[DataRequired()])
+    submit   =  SubmitField('Submit')
+
+class ReceptionistRegistryEditor(Form):
+    name     = StringField("username", validators=[DataRequired()])
+    password = PasswordField("password",validators=[DataRequired()])
+    email    = StringField("Email",validators=[DataRequired()])
+    submit   =  SubmitField('Submit')
 
 class AppointmentTemplate(Form):
     name= StringField("patient_name", validators=[DataRequired()])
@@ -132,7 +145,7 @@ def view_patients():
         flash('Cannot get posts in database: ' + str(e))
         return render_template("current_patients.html", alert=error)
 
-@app.route("/admin/viewdoctors")
+@app.route("/admin_dashboard/viewdoctors")
 def view_doctors():
     """
     Index Page
@@ -146,7 +159,7 @@ def view_doctors():
         flash('Cannot get posts in database: ' + str(e))
         return render_template("current_doctors.html", alert=error)
 
-@app.route("/admin/viewreceptions")
+@app.route("/admin_dashboard/viewreceptions")
 def view_receptions():
     """
     Index Page
@@ -270,8 +283,58 @@ def add_appointment():
         # else:
         return render_template('success.html', form=form)
     return render_template('appointment_form.html', form=form)
+
+
+@app.route("/admin_dashboard/doctor_registry", methods=["GET", "POST"])
+def add_doctor():
+    print("adding doctor")
+    form = DoctorRegistryEditor()
+    print(form.name.data)
+    if form.validate_on_submit():
+        print(form.name.data)
+        name = form.name.data
+        specialization = form.specialization.data
+        email= form.email.data
+        password= form.password.data
+        print(name)
+        print(email)
+        print(password)
+        print(specialization)
+    # post = {
+        #     'title': title,
+        #     'content': content
+        # }
+        # zero = ZeroDBStorage()
+        # if zero._create(post=post):
+        #     # return redirect('/')
+        # else:
+        return render_template('doctor_success.html', form=form)
+    return render_template('doctor_registry.html', form=form)
     
-    
+@app.route("/admin_dashboard/receptionist_registry", methods=["GET", "POST"])
+def add_receptionist():
+    print("adding receptionist")
+    form = DoctorRegistryEditor()
+    print(form.name.data)
+    if form.validate_on_submit():
+        print(form.name.data)
+        name = form.name.data
+        email= form.email.data
+        password= form.password.data
+        print(name)
+        print(email)
+        print(password)
+    # post = {
+        #     'title': title,
+        #     'content': content
+        # }
+        # zero = ZeroDBStorage()
+        # if zero._create(post=post):
+        #     # return redirect('/')
+        # else:
+        return redirect("/d_add_succesfully")
+    return render_template('receptionist_registry.html', form=form)
+      
 
 @app.route("/login/doctor_login/", methods=["GET", "POST"])
 def doctor_login():
@@ -308,7 +371,7 @@ def admin_login():
         #     # return redirect('/')
         # else:
         flash(username+'  '+password)
-        return render_template('admin_login.html', form=form)
+        return redirect('/admin_dashboard')
     return render_template('admin_login.html', form=form)
 
 
@@ -330,9 +393,17 @@ def login_student():
 def reception_dashboard():
         return render_template('reception_dashboard.html')
 
+@app.route("/admin_dashboard", methods=["GET", "POST"])
+def admin_dashboard():
+        return render_template('admin_dashboard.html')
+
 @app.route("/addsuccesfully", methods=["GET", "POST"])
 def success():
         return render_template('success.html')
+
+@app.route("/d_add_succesfully", methods=["GET", "POST"])
+def dsuccess():
+        return render_template('doctor_success.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
