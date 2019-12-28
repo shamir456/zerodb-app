@@ -287,6 +287,42 @@ def reception():
         # return render_template('reception_dashboard.html', form=form)
     return render_template('reception_login.html', form=form)
 
+
+# @app.route("/del/id=<string:post_id>", methods=['GET'])
+# def del_post(post_id):
+#     try:
+#         zero = ZeroDBStorage()
+#         result = zero._delete(pid=post_id)
+#         if result:
+#             return redirect('/')
+#     except Exception as e:
+#         flash('Cannot delete this post: ' + str(e))
+#         return redirect(url_for("get_post", post_id=post_id))
+
+@app.route("/admin_dashboard/<string:doctor_id>/", methods=['GET'])
+def del_doctor(doctor_id):
+    try:
+        zero = ZeroDBStorage()
+        print(doctor_id)
+        result = zero._delete_doctor(doctor_id=doctor_id)
+        if result:
+            return redirect(url_for("reception_dashboard"))
+    except Exception as e:
+        print('kk')
+        # flash('Cannot delete this post: ' + str(e))
+        return redirect(url_for("reception_dashboard"))
+
+@app.route("/receptionist/del/id=<string:recep_id>", methods=['GET'])
+def del_receptionist(post_id):
+    try:
+        zero = ZeroDBStorage()
+        result = zero._delete(pid=post_id)
+        if result:
+            return redirect('/')
+    except Exception as e:
+        flash('Cannot delete this post: ' + str(e))
+        return redirect(url_for("get_post", post_id=post_id))
+
 @app.route("/reception_dashboard/Appointmentform", methods=["GET", "POST"])
 def add_appointment():
     print("dsadasdas")
@@ -419,16 +455,17 @@ def admin_login():
         username = form.username.data
         password = form.password.data
         print(username,password)
-        # post = {
-        #     'title': title,
-        #     'content': content
-        # }
-        # zero = ZeroDBStorage()
-        # if zero._create(post=post):
-        #     # return redirect('/')
-        # else:
-        flash(username+'  '+password)
-        return redirect('/admin_dashboard')
+        cred = {
+            'email': username,
+            'password': password
+        }
+        zero = ZeroDBStorage()
+        if zero._authenticate_admin(cred=cred):
+            return redirect('/admin_dashboard')
+            # return redirect('/')
+        else:
+            flash('Cannot Login Admin')
+        
     return render_template('admin_login.html', form=form)
 
 

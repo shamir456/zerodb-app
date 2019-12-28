@@ -3,7 +3,7 @@ Implement action to iteract with database
 """
 import zerodb
 import transaction
-from models import Posts,Doctor,Appointment,Receptionist
+from models import Posts,Doctor,Appointment,Receptionist,Admin
 import config
 import log
 
@@ -128,6 +128,46 @@ class ZeroDBStorage(object):
                 LOG.error("Cannot add Receptionist")
         self.db.disconnect
 
+    def _create_admin(self,admin):
+        with transaction.manager:
+            try:
+                print('Hello')
+                admin_id=str(uuid.uuid4())
+                print(admin_id)
+                print(admin['email'],admin['password'],admin['name'])
+                p=Admin(admin_id=admin_id,name=admin['name'],email=admin['email'],password=admin['password'],table_role="admin")
+                print(p)
+                self.db.add(p)
+                transaction.commit()
+
+                return True
+
+            except:
+                LOG.error('Cannot Register Admin')
+
+
+
+    def _authenticate_admin(self,cred):
+        try:
+            print('Hello')
+            email=str(cred['email'])
+            print(email)
+            admin=self.db[Admin].query(table_role="admin",email=email)
+            print(admin)
+            if admin[0].email == cred['email']:
+                if admin[0].password == cred['password']:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+
+
+        except:
+            print('Proeblem accord')
+
+
 
     def _authenticate_doctor(self,cred):
         try:
@@ -223,15 +263,57 @@ class ZeroDBStorage(object):
         except:
             LOG.error("Cannot Retrive Receptionists")
 
-    def _delete(self, email):
+    def _delete(self, pid):
         try:
-            post_record = self.db[Doctor].query(email=email)
+            post_record = self.db[Posts].query(pid=pid)
             self.db.remove(post_record[0])
             transaction.commit()
             return True
         except:
             LOG.error("Cannot remove a post "
                       "with post ID: %s" % post['pid'])
+
+
+    def _delete_p(self, pid):
+        try:
+            post_record = self.db[Doctor].query(doctor_id=pid)
+            print(post_record)
+            # self.db.remove(post_record[0])
+            # transaction.commit()
+            return True
+        except:
+            LOG.error("Cannot remove a post "
+                      "with post ID: %s" % post['pid'])
+
+
+    def _delete_doctor(self,doctor_id):
+        try:
+            print('dssss')
+            print('aaa',docter_id)
+            print('dssss')
+
+            if doctor_id is not None:
+
+                doctor=self.db[Doctor].query(table_role="doctor")
+                print(doctor[0])
+                return True
+            else:
+                return False
+            # self.db.remove(post_record[0])
+            # transaction.commit()
+            
+        except:
+            LOG.error('Cannot remove Doctor')
+
+    def _delete_receptionist(self, reception_id):
+        try:
+            post_record = self.db[Receptionist].query(recep_id=reception_id)
+            self.db.remove(post_record[0])
+            transaction.commit()
+            return True
+        except:
+            LOG.error("Cannot remove a post "
+                      "with post ID: %s" % post['doctor_id'])
 
     def _get(self, pid=None):
         try:

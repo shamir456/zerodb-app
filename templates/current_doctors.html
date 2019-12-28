@@ -49,6 +49,7 @@ tr:nth-child(even) {
     <col width="100px" />
 
   <tr>
+
     <th>Name</th>
     <th>Email</th>
     <th>Specialization</th>
@@ -62,8 +63,9 @@ tr:nth-child(even) {
     <col width="100px" />
 
   <tr>
-    <td>{{post.name}}</td>
-    <td>{{post.email}}</td>
+    
+    <td>{{post.name}}</a></td>
+    <td><a href="{{ url_for('del_doctor',doctor_id=post.doctor_id) }}">{{post.email}}</a></td>
     <td>{{post.specialization}}</td>
 
   </tr>
