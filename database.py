@@ -274,17 +274,25 @@ class ZeroDBStorage(object):
                       "with post ID: %s" % post['pid'])
 
 
-    def _delete_p(self, pid):
+    def _delete_p(self, email):
         try:
-            post_record = self.db[Doctor].query(doctor_id=pid)
+            post_record = self.db[Doctor].query(table_role="doctor",email=email)
             print(post_record)
-            # self.db.remove(post_record[0])
-            # transaction.commit()
+            self.db.remove(post_record[0])
+            transaction.commit()
             return True
         except:
-            LOG.error("Cannot remove a post "
-                      "with post ID: %s" % post['pid'])
-
+            LOG.error("Cannot remove a Doctor")
+    
+    def _delete_r(self, email):
+        try:
+            post_record = self.db[Receptionist].query(table_role="receptionist",email=email)
+            print(post_record)
+            self.db.remove(post_record[0])
+            transaction.commit()
+            return True
+        except:
+            LOG.error("Cannot remove a Receptionist")
 
     def _delete_doctor(self,doctor_id):
         try:

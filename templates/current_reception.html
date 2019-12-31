@@ -60,7 +60,7 @@ tr:nth-child(even) {
 
   <tr>
     <td>{{post.name}}</td>
-    <td>{{post.email}}</td>
+    <td><a href="{{ url_for('del_receptionist',email=post.email) }}">{{post.email}}</td>
 
   </tr>
 </table>

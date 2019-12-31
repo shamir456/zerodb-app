@@ -299,29 +299,30 @@ def reception():
 #         flash('Cannot delete this post: ' + str(e))
 #         return redirect(url_for("get_post", post_id=post_id))
 
-@app.route("/admin_dashboard/<string:doctor_id>/", methods=['GET'])
-def del_doctor(doctor_id):
+@app.route("/admin_dashboard/<string:email>/", methods=['GET'])
+def del_doctor(email):
     try:
         zero = ZeroDBStorage()
-        print(doctor_id)
-        result = zero._delete_doctor(doctor_id=doctor_id)
+        print(email)
+        result = zero._delete_p(email=email)
         if result:
-            return redirect(url_for("reception_dashboard"))
+            return redirect(url_for("admin_dashboard"))
     except Exception as e:
         print('kk')
         # flash('Cannot delete this post: ' + str(e))
-        return redirect(url_for("reception_dashboard"))
+        return redirect(url_for("admin_dashboard"))
 
-@app.route("/receptionist/del/id=<string:recep_id>", methods=['GET'])
-def del_receptionist(post_id):
+@app.route("/admin_dashboard/<string:email>", methods=['GET'])
+def del_receptionist(email):
     try:
         zero = ZeroDBStorage()
-        result = zero._delete(pid=post_id)
+        print(email)
+        result = zero._delete_r(email=email)
         if result:
-            return redirect('/')
+            return redirect(url_for("admin_dashboard"))
     except Exception as e:
-        flash('Cannot delete this post: ' + str(e))
-        return redirect(url_for("get_post", post_id=post_id))
+        return redirect(url_for("admin_dashboard"))
+
 
 @app.route("/reception_dashboard/Appointmentform", methods=["GET", "POST"])
 def add_appointment():

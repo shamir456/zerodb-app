@@ -65,7 +65,7 @@ tr:nth-child(even) {
   <tr>
     
     <td>{{post.name}}</a></td>
-    <td><a href="{{ url_for('del_doctor',doctor_id=post.doctor_id) }}">{{post.email}}</a></td>
+    <td><a href="{{ url_for('del_doctor',email=post.email) }}">{{post.email}}</a></td>
     <td>{{post.specialization}}</td>
 
   </tr>

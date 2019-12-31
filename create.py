@@ -72,15 +72,19 @@ Temp_receptionist = [
 
 
 try:
-	# for doctor in Temp_doctors:
+   admin={"name":"Fahad","email":"hello@gmail.com","password":"Hello2"}
+   zero = ZeroDBStorage()
+   m='test3@gmail.com'
+   post_id='ef9e292b-a219-448a-8891-0ba7d786f3c6'
+   # print(zero._get_doctors())
+   # print(zero._get())
+   print(zero._delete_r(email=m))
+  # print(zero._delete_doctor())
 
-	# 	zero = ZeroDBStorage()
-
-	# 	print(zero._create_doctor(doctor))
-
-	for receptionist in Temp_receptionist:
-		zero = ZeroDBStorage()
-		print(zero._create_receptionist(receptionist))
+   # if(zero._create_admin(admin=admin)):
+   #  print('Created')
+   # else:
+   #  print('Not working')
 
 except Exception as e:
 	print("Could not happen")
